@@ -1,6 +1,6 @@
 <script lang="ts">
   const images = [
-    'https://images.unsplash.com/photo-1613977257363-31169399859b?q=80&w=2000&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2000&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2000&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2000&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000&auto=format&fit=crop',
@@ -8,6 +8,8 @@
     'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2000&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2000&auto=format&fit=crop',
     'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=2000&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2000&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop',
   ];
 </script>
 

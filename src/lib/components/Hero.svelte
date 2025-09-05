@@ -11,8 +11,21 @@
     <p class="text-lg md:text-xl mb-8">
       Your private luxury villa in Guanacaste. Welcome to your new home.
     </p>
-    <a href="#booking" class="bg-white text-gray-800 px-8 py-3 rounded-md font-semibold hover:bg-gray-200">
+    <button 
+      on:click={() => {
+        const element = document.getElementById('gallery');
+        if (element) {
+          const headerHeight = 80;
+          const elementPosition = element.offsetTop - headerHeight;
+          window.scrollTo({
+            top: elementPosition,
+            behavior: 'smooth'
+          });
+        }
+      }}
+      class="bg-white text-gray-800 px-8 py-3 rounded-md font-semibold hover:bg-gray-200 transition-colors duration-200"
+    >
       Explore the Villa
-    </a>
+    </button>
   </div>
 </section>

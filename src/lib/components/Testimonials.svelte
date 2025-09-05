@@ -18,17 +18,82 @@
       author: 'The Smiths',
       rating: 5,
     },
+    {
+      quote:
+        'Absolutely stunning property with breathtaking ocean views. The villa exceeded all our expectations and the service was impeccable.',
+      author: 'Maria & Carlos',
+      rating: 5,
+    },
+    {
+      quote:
+        'A hidden gem in Costa Rica! The villa is luxurious, private, and surrounded by incredible natural beauty. Perfect for our honeymoon.',
+      author: 'Emma & David',
+      rating: 5,
+    },
+    {
+      quote:
+        'We felt like we were living in paradise. The infinity pool, the views, and the thoughtful amenities made this trip unforgettable.',
+      author: 'The Johnson Family',
+      rating: 5,
+    },
+    {
+      quote:
+        'The most beautiful villa we have ever stayed in. Every detail was perfect, from the modern design to the incredible location.',
+      author: 'Alessandro & Francesca',
+      rating: 5,
+    },
+    {
+      quote:
+        'An oasis of tranquility and luxury. We loved the spacious rooms, the private pool, and the stunning architecture. Highly recommended!',
+      author: 'Michael & Sarah',
+      rating: 5,
+    },
+    {
+      quote:
+        'This villa is a masterpiece. The blend of modern luxury with natural beauty is extraordinary. We can\'t wait to return!',
+      author: 'The Rodriguez Family',
+      rating: 5,
+    },
+    {
+      quote:
+        'Our group of friends had the most amazing time. The villa was spacious enough for all of us and the location was perfect for exploring Costa Rica.',
+      author: 'Lisa & Friends',
+      rating: 5,
+    },
   ];
 
-  let currentTestimonial = 0;
+  let currentSlide = 0;
+  let testimonialsPerView = 1; // Will be updated based on screen size
+
+  // Calculate max slides based on testimonials per view
+  $: maxSlides = Math.ceil(testimonials.length / testimonialsPerView) - 1;
 
   function next() {
-    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+    currentSlide = currentSlide >= maxSlides ? 0 : currentSlide + 1;
   }
 
   function prev() {
-    currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+    currentSlide = currentSlide <= 0 ? maxSlides : currentSlide - 1;
   }
+
+  // Update testimonials per view based on screen size
+  function updateTestimonialsPerView() {
+    if (typeof window !== 'undefined') {
+      testimonialsPerView = window.innerWidth >= 768 ? 2 : 1;
+      // Adjust current slide to prevent going out of bounds
+      if (currentSlide > maxSlides) {
+        currentSlide = maxSlides;
+      }
+    }
+  }
+
+  // Update on mount and resize
+  import { onMount } from 'svelte';
+  onMount(() => {
+    updateTestimonialsPerView();
+    window.addEventListener('resize', updateTestimonialsPerView);
+    return () => window.removeEventListener('resize', updateTestimonialsPerView);
+  });
 </script>
 
 <section id="testimonials" class="py-20">
@@ -40,11 +105,11 @@
       <div class="overflow-hidden">
         <div
           class="flex transition-transform duration-500 ease-in-out"
-          style="transform: translateX(-{currentTestimonial * 100}%)"
+          style="transform: translateX(-{currentSlide * (100 / testimonialsPerView)}%)"
         >
-          {#each testimonials as testimonial}
-            <div class="w-full flex-shrink-0">
-              <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
+          {#each testimonials as testimonial, index}
+            <div class="w-full md:w-1/2 flex-shrink-0 px-2">
+              <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg h-full flex flex-col">
                 <div class="flex items-center mb-4">
                   {#each { length: testimonial.rating } as _, i}
                     <svg
@@ -58,7 +123,7 @@
                     </svg>
                   {/each}
                 </div>
-                <p class="text-gray-600 text-lg italic">"{testimonial.quote}"</p>
+                <p class="text-gray-600 text-lg italic flex-grow">"{testimonial.quote}"</p>
                 <p class="text-gray-800 font-semibold mt-4 text-right">
                   - {testimonial.author}
                 </p>
@@ -70,16 +135,33 @@
 
       <button
         on:click={prev}
-        class="absolute top-1/2 left-0 md:-left-16 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+        class="absolute top-1/2 left-0 md:-left-16 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200"
+        aria-label="Previous testimonials"
       >
-        &larr;
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
       </button>
       <button
         on:click={next}
-        class="absolute top-1/2 right-0 md:-right-16 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+        class="absolute top-1/2 right-0 md:-right-16 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200"
+        aria-label="Next testimonials"
       >
-        &rarr;
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
       </button>
+    </div>
+
+    <!-- Slide indicators -->
+    <div class="flex justify-center mt-8 space-x-2">
+      {#each { length: maxSlides + 1 } as _, index}
+        <button
+          on:click={() => currentSlide = index}
+          class="w-3 h-3 rounded-full transition-colors duration-200 {currentSlide === index ? 'bg-gray-800' : 'bg-gray-300'}"
+          aria-label="Go to slide {index + 1}"
+        ></button>
+      {/each}
     </div>
   </div>
 </section>
